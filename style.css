@@ -1,11 +1,15 @@
 :root {
   --bg: #e9e9e7;
   --fg: #111111;
+  --hover: #a3a3a0;
+  --pad: clamp(16px, 2vw, 34px);
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 :root.dark {
   --bg: #111111;
   --fg: #e9e9e7;
+  --hover: #6f6f6d;
 }
 
 * {
@@ -25,19 +29,24 @@ body {
   font-family: "Inter", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-weight: 800;
   text-transform: uppercase;
-  font-size: 15px;
-  line-height: 1.35;
+  font-size: clamp(0.82rem, 0.45vw + 0.68rem, 1.1rem);
+  line-height: 1.38;
   letter-spacing: 0.01em;
-  transition: background 0.25s ease, color 0.25s ease;
+  transition: background 0.35s ease, color 0.35s ease;
+  overflow-x: hidden;
 }
 
 .grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 24px;
+  gap: clamp(16px, 1.8vw, 28px);
   min-height: 100vh;
   min-height: 100dvh;
-  padding: 28px 32px;
+  padding: var(--pad);
+}
+
+.col {
+  will-change: transform;
 }
 
 .col--bio {
@@ -46,17 +55,42 @@ body {
   justify-content: space-between;
 }
 
-.bio p.indent {
-  text-indent: 2.2em;
+/* Masked line reveal: each rendered line gets wrapped in
+   .line (the mask) / .line-inner (slides up from below). */
+.line {
+  display: block;
+  overflow: hidden;
+}
+
+.line-inner {
+  display: block;
+  transform: translateY(115%);
+}
+
+body.loaded .line-inner {
+  transform: translateY(0);
+  transition: transform 1s var(--ease-out);
+  transition-delay: var(--d, 0s);
+}
+
+body.settled .line-inner {
+  transition: none;
+}
+
+/* First line of the indented paragraph keeps its indent
+   after JS replaces text-indent with line wrappers. */
+.line--indent .line-inner {
+  padding-left: 2.2em;
 }
 
 a {
   color: inherit;
   text-decoration: none;
+  transition: color 0.2s ease;
 }
 
 a:hover {
-  text-decoration: underline;
+  color: var(--hover);
 }
 
 .theme-toggle {
@@ -70,21 +104,42 @@ a:hover {
   text-align: left;
   padding: 0;
   align-self: flex-start;
+  transition: color 0.2s ease;
 }
 
 .theme-toggle:hover {
-  text-decoration: underline;
+  color: var(--hover);
 }
 
 @media (max-width: 900px) {
+  body {
+    font-size: clamp(1rem, 3.4vw, 1.35rem);
+  }
+
   .grid {
     grid-template-columns: 1fr;
-    gap: 32px;
-    padding: 20px;
+    gap: clamp(28px, 6vw, 48px);
+    padding: clamp(16px, 4vw, 24px);
+  }
+
+  .col--dup {
+    display: none;
   }
 
   .col--bio {
     flex: 1;
-    gap: 32px;
+    gap: clamp(28px, 6vw, 48px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .line-inner,
+  body.loaded .line-inner {
+    transform: none;
+    transition: none;
+  }
+
+  .col {
+    transform: none !important;
   }
 }
