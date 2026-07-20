@@ -122,10 +122,6 @@ a:hover {
     padding: clamp(16px, 4vw, 24px);
   }
 
-  .col--dup {
-    display: none;
-  }
-
   .col--bio {
     flex: 1;
     gap: clamp(28px, 6vw, 48px);
