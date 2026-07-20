@@ -120,15 +120,18 @@
     assignDelays();
   }
 
-  splitAll();
-
-  requestAnimationFrame(() => {
-    requestAnimationFrame(() => document.body.classList.add('loaded'));
+  // Wait for the webfont so line measurement matches the final metrics;
+  // .split elements stay hidden until body.loaded reveals them.
+  const fontsReady = document.fonts ? document.fonts.ready : Promise.resolve();
+  Promise.race([fontsReady, new Promise((r) => setTimeout(r, 2000))]).then(() => {
+    splitAll();
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => document.body.classList.add('loaded'));
+    });
+    // After the entrance finishes, drop transitions so re-splits
+    // (resize, toggle relabel) don't replay the animation.
+    setTimeout(() => document.body.classList.add('settled'), 1600);
   });
-
-  // After the entrance finishes, drop transitions so re-splits
-  // (resize, toggle relabel) don't replay the animation.
-  setTimeout(() => document.body.classList.add('settled'), 1600);
 
   let resizeTimer;
   window.addEventListener('resize', () => {

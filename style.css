@@ -57,6 +57,10 @@ body {
 
 /* Masked letter reveal: each rendered line is a mask (.line,
    overflow hidden) and every letter (.ltr) slides up from below it. */
+body:not(.loaded) .split {
+  visibility: hidden;
+}
+
 .line {
   display: block;
   overflow: hidden;
