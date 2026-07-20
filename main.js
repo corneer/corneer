@@ -26,12 +26,15 @@
     const isIndent = el.classList.contains('indent');
 
     // Tokenize into word spans (keeping whole anchors intact).
+    // Letters are created here so measurement happens on the exact
+    // elements that render — inline-block rounding stays consistent.
     const tokens = [];
     Array.from(el.childNodes).forEach((node) => {
       if (node.nodeType === Node.TEXT_NODE) {
         node.textContent.split(/\s+/).filter(Boolean).forEach((word) => {
           const span = document.createElement('span');
-          span.textContent = word;
+          span.className = 'word';
+          toLetters(word, span);
           tokens.push(span);
         });
       } else if (node.nodeName === 'BR') {
@@ -39,7 +42,12 @@
         brMark.dataset.br = 'true';
         tokens.push(brMark);
       } else {
-        tokens.push(node.cloneNode(true));
+        const clone = node.cloneNode(true);
+        const text = clone.textContent;
+        clone.innerHTML = '';
+        clone.setAttribute('aria-label', text);
+        toLetters(text, clone);
+        tokens.push(clone);
       }
     });
 
@@ -83,18 +91,7 @@
       const inner = document.createElement('span');
       inner.className = 'line-inner';
       words.forEach((w, wIdx) => {
-        const text = w.textContent;
-        if (w.nodeName === 'A') {
-          w.innerHTML = '';
-          w.setAttribute('aria-label', text);
-          toLetters(text, w);
-          inner.appendChild(w);
-        } else {
-          const word = document.createElement('span');
-          word.className = 'word';
-          toLetters(text, word);
-          inner.appendChild(word);
-        }
+        inner.appendChild(w);
         if (wIdx < words.length - 1) inner.appendChild(document.createTextNode(' '));
       });
       line.appendChild(inner);
