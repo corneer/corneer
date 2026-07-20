@@ -178,29 +178,4 @@
       }, { once: true });
     }, { once: true });
   });
-
-  /* ---------- Soft parallax ---------- */
-  // Columns drift at different speeds: pointer on desktop, scroll on touch.
-  if (!reduceMotion) {
-    const cols = Array.from(document.querySelectorAll('.col'));
-    const speeds = cols.map((c) => parseFloat(c.dataset.speed || '1'));
-    let targetY = 0;
-    let currentY = 0;
-
-    window.addEventListener('pointermove', (e) => {
-      targetY = (e.clientY / window.innerHeight - 0.5) * 2;
-    });
-
-    window.addEventListener('scroll', () => {
-      targetY = Math.min(1, window.scrollY / window.innerHeight) * 2;
-    }, { passive: true });
-
-    (function raf() {
-      currentY += (targetY - currentY) * 0.06;
-      cols.forEach((col, i) => {
-        col.style.transform = `translateY(${(-currentY * 18 * speeds[i]).toFixed(2)}px)`;
-      });
-      requestAnimationFrame(raf);
-    })();
-  }
 })();

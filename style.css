@@ -45,10 +45,6 @@ body {
   padding: var(--pad);
 }
 
-.col {
-  will-change: transform;
-}
-
 .col--bio {
   display: flex;
   flex-direction: column;
@@ -171,9 +167,5 @@ a:hover {
 
   .wipe {
     display: none;
-  }
-
-  .col {
-    transform: none !important;
   }
 }
