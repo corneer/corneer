@@ -1,8 +1,8 @@
 (() => {
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  // Whole entrance fits inside 2s: max stagger delay + letter duration (0.7s).
-  const MAX_DELAY = 1.3;
+  // Whole entrance fits inside 1.5s: max stagger delay + letter duration (0.6s).
+  const MAX_DELAY = 0.9;
 
   const splitElements = Array.from(document.querySelectorAll('.split'));
   const originals = splitElements.map((el) => el.innerHTML);
@@ -108,7 +108,7 @@
     document.querySelectorAll('.col').forEach((col, colIdx) => {
       col.querySelectorAll('.line-inner').forEach((inner, lineIdx) => {
         inner.querySelectorAll('.ltr').forEach((ltr, ltrIdx) => {
-          const d = 0.05 + colIdx * 0.16 + lineIdx * 0.06 + ltrIdx * 0.008;
+          const d = 0.04 + colIdx * 0.11 + lineIdx * 0.042 + ltrIdx * 0.006;
           ltr.style.setProperty('--d', `${Math.min(d, MAX_DELAY).toFixed(3)}s`);
         });
       });
@@ -128,7 +128,7 @@
 
   // After the entrance finishes, drop transitions so re-splits
   // (resize, toggle relabel) don't replay the animation.
-  setTimeout(() => document.body.classList.add('settled'), 2100);
+  setTimeout(() => document.body.classList.add('settled'), 1600);
 
   let resizeTimer;
   window.addEventListener('resize', () => {
