@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Joel Cornéer — Creative Design Lead</title>
+  <meta name="description" content="Joel Cornéer — Creative Design Lead @ JUNG. Exploring how design and technology shape stronger ideas and better ways of working.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="grid">
+    <div class="col">
+      <p>Joel Cornéer<br>Creative Design Lead @ JUNG</p>
+    </div>
+    <div class="col">
+      <p>Joel Cornéer<br>Creative Design Lead @ JUNG</p>
+    </div>
+    <div class="col">
+      <p>
+        <a href="tel:+46761707022">+46 761 70 70 22</a><br>
+        <a href="mailto:joel.corneer@jung.co">E-mail</a><br>
+        <a href="https://www.linkedin.com/in/joelcorneer/" target="_blank" rel="noopener">LinkedIn</a>
+      </p>
+    </div>
+    <div class="col col--bio">
+      <div class="bio">
+        <p>Exploring how design and technology shape stronger ideas and better ways of working. I&nbsp;craft and collaborate across most areas of design, including campaigns, experiences and explorations.</p>
+        <p class="indent">My focus is on elevating creativity, evolving design methods and helping teams turn curiosity into something that moves people and actually makes a difference.</p>
+      </div>
+      <button class="theme-toggle" id="themeToggle" type="button">Darkness</button>
+    </div>
+  </main>
+  <script>
+    const toggle = document.getElementById('themeToggle');
+    toggle.addEventListener('click', () => {
+      const dark = document.documentElement.classList.toggle('dark');
+      toggle.textContent = dark ? 'Lightness' : 'Darkness';
+    });
+  </script>
+</body>
+</html>
