@@ -125,9 +125,17 @@
   const fontsReady = document.fonts ? document.fonts.ready : Promise.resolve();
   Promise.race([fontsReady, new Promise((r) => setTimeout(r, 2000))]).then(() => {
     splitAll();
-    requestAnimationFrame(() => {
-      requestAnimationFrame(() => document.body.classList.add('loaded'));
-    });
+    // Force a reflow so letters start from their masked position, then
+    // reveal. setTimeout fallback covers throttled rAF in background tabs.
+    void document.body.offsetHeight;
+    let revealed = false;
+    const reveal = () => {
+      if (revealed) return;
+      revealed = true;
+      document.body.classList.add('loaded');
+    };
+    requestAnimationFrame(() => requestAnimationFrame(reveal));
+    setTimeout(reveal, 300);
     // After the entrance finishes, drop transitions so re-splits
     // (resize, toggle relabel) don't replay the animation.
     setTimeout(() => document.body.classList.add('settled'), 1600);
