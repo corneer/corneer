@@ -55,8 +55,8 @@ body {
   justify-content: space-between;
 }
 
-/* Masked line reveal: each rendered line gets wrapped in
-   .line (the mask) / .line-inner (slides up from below). */
+/* Masked letter reveal: each rendered line is a mask (.line,
+   overflow hidden) and every letter (.ltr) slides up from below it. */
 .line {
   display: block;
   overflow: hidden;
@@ -64,17 +64,44 @@ body {
 
 .line-inner {
   display: block;
+}
+
+.word {
+  display: inline-block;
+}
+
+.ltr {
+  display: inline-block;
   transform: translateY(115%);
 }
 
-body.loaded .line-inner {
+body.loaded .ltr {
   transform: translateY(0);
-  transition: transform 1s var(--ease-out);
+  transition: transform 0.7s var(--ease-out);
   transition-delay: var(--d, 0s);
 }
 
-body.settled .line-inner {
+body.settled .ltr {
   transition: none;
+}
+
+/* Full-page wipe when switching theme. */
+.wipe {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  pointer-events: none;
+  transform: translateY(101%);
+}
+
+.wipe--in {
+  transform: translateY(0);
+  transition: transform 0.45s cubic-bezier(0.7, 0, 0.3, 1);
+}
+
+.wipe--out {
+  transform: translateY(-101%);
+  transition: transform 0.45s cubic-bezier(0.7, 0, 0.3, 1);
 }
 
 /* First line of the indented paragraph keeps its indent
@@ -129,10 +156,14 @@ a:hover {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .line-inner,
-  body.loaded .line-inner {
+  .ltr,
+  body.loaded .ltr {
     transform: none;
     transition: none;
+  }
+
+  .wipe {
+    display: none;
   }
 
   .col {
